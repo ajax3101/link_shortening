@@ -1,0 +1,9 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1>Welcome to My URL Shortener!</h1>
+  <p>{{ message }}</p>
+  <p><a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Get Started</a></p>
+</div>
+{% endblock %}

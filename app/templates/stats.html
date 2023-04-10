@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Link Stats</h2>
+<p>Link: <a href="{{ url }}">{{ url }}</a></p>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>IP Address</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>User Agent</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for stat in stats %}
+        <tr>
+            <td>{{ stat.timestamp }}</td>
+            <td>{{ stat.ip_address }}</td>
+            <td>{{ stat.country }}</td>
+            <td>{{ stat.city }}</td>
+            <td>{{ stat.user_agent }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
