@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h1 class="my-4">Dashboard</h1>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <h2 class="my-4">My Links</h2>
+      {% if links %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Short URL</th>
+              <th>Original URL</th>
+              <th>QR Code</th>
+              <th>Clicks</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for link in links %}
+              <tr>
+                <td><a href="{{ url_for('redirect', short_url=link.short_url) }}">{{ request.host_url }}{{ link.short_url }}</a></td>
+                <td>{{ link.original_url }}</td>
+                <td><img src="{{ url_for('qr', short_url=link.short_url) }}" alt="{{ link.short_url }}"></td>
+                <td>{{ link.clicks }}</td>
+                <td><a href="{{ url_for('delete', short_url=link.short_url) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this link?')">Delete</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>You have not created any links yet.</p>
+      {% endif %}
+      <hr>
+      <h2 class="my-4">Add a New Link</h2>
+      <form method="POST" action="{{ url_for('create_link') }}">
+        {{ form.csrf_token }}
+        <div class="form-group">
+          {{ form.original_url.label }} {{ form.original_url(size=50, class="form-control") }}
+          {% for error in form.original_url.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          {{ form.custom_alias.label }} {{ form.custom_alias(size=10, class="form-control") }}
+          {% for error in form.custom_alias.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Create Link</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
